@@ -1,0 +1,6 @@
+class Food(object):
+    pass
+
+
+
+
