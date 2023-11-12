@@ -1,5 +1,0 @@
-pizza 1 2 3 4
-soda 1 2 3 4
-pasta 100 10 20 100
-    
-apple 12 12 12 12

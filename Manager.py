@@ -9,15 +9,18 @@ class Manager():
     def __init__(self):
         self.foods = []
     
-    def addFood(self, newName, calories, fat, prot, carb):
+    def addFood(self, newName, calories, prot, fat, carb):
+        if not(newName.isalpha()) or not(calories.isdigit()) or not(prot.isdigit()) or not(fat.isdigit()) or not(carb.isdigit()):
+            print("Incorrect Arguments")
+            return
         for food in self.foods:
             if food.name == newName:
                 print("food already exists")
                 return 
             
-        self.foods.append(Food(newName, calories, fat, prot, carb))
+        self.foods.append(Food(newName, calories, prot, fat, carb))
         with open("foods.txt", "a") as file:
-            file.write(newName + " " + str(calories) + " " + str(fat) + " " + str(prot) + " " + str(carb) + "\n")     #save foods in foods.txt
+            file.write(newName + " " + str(calories) + " " + str(prot) + " " + str(fat) + " " + str(carb) + "\n")     #save foods in foods.txt
 
 
 
