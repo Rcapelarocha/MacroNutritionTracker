@@ -17,10 +17,10 @@ class Day():
 
     
     def eatFood(self, food):
-        self.currentCalories += food.calories
-        self.currentProtein += food.protein
-        self.currentFat += food.fat
-        self.currentCarbs += food.carbs
+        self.currentCalories += int(food.calories)
+        self.currentProtein += int(food.protein)
+        self.currentFat += int(food.fat)
+        self.currentCarbs += int(food.carbs)
         self.eatenFoods.append(food.name)
         with open("currentNuts.txt", "w") as file:
             file.write(str(self.currentCalories) + " " + str(self.currentProtein) + " " + str(self.currentFat) + " " + str(self.currentCarbs))
