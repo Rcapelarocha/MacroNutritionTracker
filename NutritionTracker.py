@@ -22,6 +22,7 @@ else:
     day = Day()
     with open("date.txt", "w") as file:
         file.write(currentDate.isoformat())
+    day.clearCurrentNuts()
 
 
 def updateBars():
@@ -69,6 +70,18 @@ def switchToAddFood():
     frameMain.pack_forget()
     frameAddFood.pack()
 
+def switchToChangeMaxNuts():
+    frameMain.pack_forget()
+    frameChangeGoal.pack()
+
+def changeMaxNuts():
+    mCal = caloriesMaxEntry.get()
+    mProtein = proteinMaxEntry.get()
+    mFat = fatMaxEntry.get()
+    mCarb = carbMaxEntry.get()
+    day.changeGoal(mCal, mProtein, mFat, mCarb)
+ 
+
 def submitAddFood():
     name = nameEntry.get()
     cal = caloriesEntry.get()
@@ -91,12 +104,18 @@ def backFromEat():
     frameMain.pack()
     updateBars()
     
+def backFromChangeGoals():
+    frameChangeGoal.pack_forget()
+    frameMain.pack()
+    updateBars()
 
 def backFromAdd():
     frameAddFood.pack_forget()
     frameMain.pack()
     updateBars()
-    
+
+def exitWindow():
+    window.destroy()
 
 #GUI---------------------------------
 
@@ -106,6 +125,7 @@ window.geometry("500x500")
 frameMain = Frame(window)
 frameAddFood = Frame(window)
 frameEatFood = Frame(window)
+frameChangeGoal = Frame(window)
 
 frameMain.pack()
 frameAddFood.pack_forget()
@@ -121,7 +141,6 @@ fatLabl = Label(frameMain, text = 'Fat')
 fatLabl.grid(row = 2, column = 0)
 carbLabl = Label(frameMain, text = 'Carbohydrates')
 carbLabl.grid(row = 3, column = 0)
-
 
 caloriesBar = Progressbar(frameMain, orient=HORIZONTAL, length = 300)
 caloriesBar.grid(row = 0, column = 1)
@@ -141,8 +160,11 @@ fatCurLabl.grid(row = 2, column = 2)
 carbCurLabl = Label(frameMain, text = str(day.currentCarbs) + "/" + str(day.maxCarbs))
 carbCurLabl.grid(row = 3, column = 2)
 
-eatFoodButton = Button(frameMain,text = 'Eat Food', command = switchToEatFood).grid(row = 4, column = 0)
-addFoodButton = Button(frameMain,text = 'Add Food', command = switchToAddFood).grid(row = 4, column = 1)
+eatFoodButton = Button(frameMain,text = 'Eat Food', command = switchToEatFood).grid(row = 5, column = 0)
+addFoodButton = Button(frameMain,text = 'Add Food', command = switchToAddFood).grid(row = 5, column = 1)
+changeMaxNutsButton = Button(frameMain, text = 'Change Macro Goals', command = switchToChangeMaxNuts).grid(row = 5, column = 2)
+exitButton = Button(frameMain, text = 'Exit', command = exitWindow).grid(row = 5, column = 3)
+
 updateBars()
 
 #Add Food
@@ -173,6 +195,32 @@ submit.grid(row = 5, column = 1)
 
 addToMain = Button(frameAddFood, text = 'Back', command = backFromAdd)
 addToMain.grid(row = 5, column = 0)
+
+#Change Goals
+
+caloriesMaxLabel = Label(frameChangeGoal, text = 'Max Calories')
+caloriesMaxLabel.grid(row = 1, column = 0)
+caloriesMaxEntry = Entry(frameChangeGoal)
+caloriesMaxEntry.grid(row = 1, column = 1)
+proteinMaxLabel = Label(frameChangeGoal, text = 'Max Protein')
+proteinMaxLabel.grid(row = 2, column = 0)
+proteinMaxEntry = Entry(frameChangeGoal)
+proteinMaxEntry.grid(row = 2, column = 1)
+fatMaxLabel = Label(frameChangeGoal, text = 'Max Fat')
+fatMaxLabel.grid(row = 3, column = 0)
+fatMaxEntry = Entry(frameChangeGoal)
+fatMaxEntry.grid(row = 3, column = 1)
+carbMaxLabel = Label(frameChangeGoal, text = 'Max Carbohydrates')
+carbMaxLabel.grid(row = 4, column = 0)
+carbMaxEntry = Entry(frameChangeGoal)
+carbMaxEntry.grid(row = 4, column = 1)
+
+ChangeGoalsButton = Button(frameChangeGoal, text = 'Change Goals', command = changeMaxNuts)
+ChangeGoalsButton.grid(row = 5, column = 1)
+
+changeGoalsToMain = Button(frameChangeGoal, text = 'Back', command = backFromChangeGoals)
+changeGoalsToMain.grid(row = 5, column = 0)
+
 #---------------------------
 
 

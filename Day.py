@@ -27,11 +27,7 @@ class Day():
     
 
 
-    def changeGoal(self):
-        mCal = input("What is your calori limit? ")
-        mProt = input("What is your protein limit? ")
-        mFat = input("What is your fat limit? ")
-        mCarb = input("What is your carbohydrate limit? ")
+    def changeGoal(self, mCal, mProt, mFat, mCarb):
         self.maxCalories = int(mCal)
         self.maxProtein = int(mProt)
         self.maxFat = int(mFat)
@@ -58,7 +54,10 @@ class Day():
             else:
                 print("Invalid number of values")
             
-            
+    def clearCurrentNuts(self):
+        with open("currentNuts.txt", "w") as file:
+            file.write("")
+                
     def readMaxNuts(self):
         with open("maxNuts.txt", "r") as file:
             line = file.readline()
