@@ -1,11 +1,13 @@
 from math import fabs
+import tkinter
+from turtle import bgcolor
 from Manager import Manager
 from Food import Food
 from Day import Day
 from datetime import date
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import ttk
+
 import os
 
 manager = Manager()     
@@ -47,31 +49,34 @@ if day.maxCalories == 0 or day.maxCarbs == 0 or day.maxProtein == 0 or day.maxFa
     print("Welcome to the Macro tracker. To start enter your macro goals/limits")
     day.changeGoal()
 
-#Button Commands------------------
+#BUTTON COMMANDS-------------------------------------------
 
 def switchToEatFood():
-    frameMain.pack_forget()
+    frameMainTop.pack_forget()
+    frameMainBottom.pack_forget()
     for widget in frameEatFood.winfo_children():
         widget.destroy()
     roww = 0
     coll = 0
     for food in manager.foods:
-        foodLabel = Label(frameEatFood, text = food.name)
+        foodLabel = tkinter.Label(frameEatFood, text = food.name, bg = '#191b3e', fg = 'white', padx = 10, pady = 10)
         foodLabel.grid(row = roww, column = coll)
-        eatButton = Button(frameEatFood, text = 'Eat',command=lambda f=food, r=roww: eat(f, r))
+        eatButton = tkinter.Button(frameEatFood, text = 'Eat', bg = '#671ea0', fg = 'white', padx = 10, command=lambda f=food, r=roww: eat(f, r))
         eatButton.grid(row = roww, column = coll+1)
         roww = roww + 1
         
-    eatToMain = Button(frameEatFood, text = 'Back', command = backFromEat)
+    eatToMain = tkinter.Button(frameEatFood, text = 'Back', command = backFromEat, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
     eatToMain.grid(row = roww+1, column = 0)
     frameEatFood.pack()
 
 def switchToAddFood():
-    frameMain.pack_forget()
+    frameMainTop.pack_forget()
+    frameMainBottom.pack_forget()
     frameAddFood.pack()
 
 def switchToChangeMaxNuts():
-    frameMain.pack_forget()
+    frameMainTop.pack_forget()
+    frameMainBottom.pack_forget()
     frameChangeGoal.pack()
 
 def changeMaxNuts():
@@ -101,17 +106,20 @@ def eat(food, row):
 
 def backFromEat():
     frameEatFood.pack_forget()
-    frameMain.pack()
+    frameMainTop.pack()
+    frameMainBottom.pack()
     updateBars()
     
 def backFromChangeGoals():
     frameChangeGoal.pack_forget()
-    frameMain.pack()
+    frameMainTop.pack()
+    frameMainBottom.pack()
     updateBars()
 
 def backFromAdd():
     frameAddFood.pack_forget()
-    frameMain.pack()
+    frameMainTop.pack()
+    frameMainBottom.pack()
     updateBars()
 
 def exitWindow():
@@ -121,107 +129,113 @@ def exitWindow():
 
 window = Tk()
 window.geometry("500x500")
+window.config(background = '#191b3e')
 
-frameMain = Frame(window)
-frameAddFood = Frame(window)
-frameEatFood = Frame(window)
-frameChangeGoal = Frame(window)
+frameMainTop = tkinter.Frame(window, bg = '#191b3e')
+frameMainBottom = tkinter.Frame(window, bg = '#191b3e')
+frameAddFood = tkinter.Frame(window, bg = '#191b3e')
+frameEatFood = tkinter.Frame(window, bg = '#191b3e')
+frameChangeGoal = tkinter.Frame(window, bg = '#191b3e')
 
-frameMain.pack()
+frameMainTop.pack()
+frameMainBottom.pack()
 frameAddFood.pack_forget()
 frameEatFood.pack_forget()
 
-#main
+#MAIN -----------------------------------------------------
 
-caloriLabl = Label(frameMain, text = 'Calories')
+#Labels 
+caloriLabl = tkinter.Label(frameMainTop, text = 'Calories', bg = '#191b3e', fg = 'white', padx = 5)
 caloriLabl.grid(row = 0, column = 0)
-protLabl = Label(frameMain, text = 'Protein')
+protLabl = tkinter.Label(frameMainTop, text = 'Protein', bg = '#191b3e', fg = 'white', padx = 5)
 protLabl.grid(row = 1, column = 0)
-fatLabl = Label(frameMain, text = 'Fat')
+fatLabl = tkinter.Label(frameMainTop, text = 'Fat', bg = '#191b3e', fg = 'white', padx = 5)
 fatLabl.grid(row = 2, column = 0)
-carbLabl = Label(frameMain, text = 'Carbohydrates')
+carbLabl = tkinter.Label(frameMainTop, text = 'Carbohydrates', bg = '#191b3e', fg = 'white', padx = 5)
 carbLabl.grid(row = 3, column = 0)
 
-caloriesBar = Progressbar(frameMain, orient=HORIZONTAL, length = 300)
+#Bars
+caloriesBar = Progressbar(frameMainTop, orient=HORIZONTAL, length = 300)
 caloriesBar.grid(row = 0, column = 1)
-proteinBar = Progressbar(frameMain, orient=HORIZONTAL, length = 300)
+proteinBar = Progressbar(frameMainTop, orient=HORIZONTAL, length = 300)
 proteinBar.grid(row = 1, column = 1)
-fatBar = Progressbar(frameMain, orient=HORIZONTAL, length = 300)
+fatBar = Progressbar(frameMainTop, orient=HORIZONTAL, length = 300)
 fatBar.grid(row = 2, column = 1)
-carbsBar = Progressbar(frameMain, orient=HORIZONTAL, length = 300)
+carbsBar = Progressbar(frameMainTop, orient=HORIZONTAL, length = 300)
 carbsBar.grid(row = 3, column = 1)
 
-calCurLabl = Label(frameMain, text = str(day.currentCalories) + "/" + str(day.maxCalories))
+#Numbers
+calCurLabl = tkinter.Label(frameMainTop, text = str(day.currentCalories) + "/" + str(day.maxCalories), bg = '#191b3e', fg = 'white', padx = 5)
 calCurLabl.grid(row = 0, column = 2)
-protCurLabl = Label(frameMain, text = str(day.currentProtein) + "/" + str(day.maxProtein))
+protCurLabl = tkinter.Label(frameMainTop, text = str(day.currentProtein) + "/" + str(day.maxProtein), bg = '#191b3e', fg = 'white', padx = 5)
 protCurLabl.grid(row = 1, column = 2)
-fatCurLabl = Label(frameMain, text = str(day.currentFat) + "/" + str(day.maxFat))
+fatCurLabl = tkinter.Label(frameMainTop, text = str(day.currentFat) + "/" + str(day.maxFat), bg = '#191b3e', fg = 'white', padx = 5)
 fatCurLabl.grid(row = 2, column = 2)
-carbCurLabl = Label(frameMain, text = str(day.currentCarbs) + "/" + str(day.maxCarbs))
+carbCurLabl = tkinter.Label(frameMainTop, text = str(day.currentCarbs) + "/" + str(day.maxCarbs), bg = '#191b3e', fg = 'white', padx = 5)
 carbCurLabl.grid(row = 3, column = 2)
 
-eatFoodButton = Button(frameMain,text = 'Eat Food', command = switchToEatFood).grid(row = 5, column = 0)
-addFoodButton = Button(frameMain,text = 'Add Food', command = switchToAddFood).grid(row = 5, column = 1)
-changeMaxNutsButton = Button(frameMain, text = 'Change Macro Goals', command = switchToChangeMaxNuts).grid(row = 5, column = 2)
-exitButton = Button(frameMain, text = 'Exit', command = exitWindow).grid(row = 5, column = 3)
-
+#Buttons
+eatFoodButton = tkinter.Button(frameMainBottom,text = 'Eat Food', bg = '#191b3e', fg = 'white', command = switchToEatFood).grid(row = 5, column = 0, padx = 10, pady = 10)
+addFoodButton = tkinter.Button(frameMainBottom,text = 'Add Food', bg = '#191b3e', fg = 'white', command = switchToAddFood).grid(row = 5, column = 1, padx = 10, pady = 10)
+changeMaxNutsButton = tkinter.Button(frameMainBottom, text = 'Change Macro Goals', fg = 'white', bg = '#191b3e', command = switchToChangeMaxNuts).grid(row = 5, column = 2, padx = 10, pady = 10)
+exitButton = tkinter.Button(frameMainBottom, text = 'Exit', bg = '#191b3e', fg = 'white', command = exitWindow).grid(row = 5, column = 3, padx = 10, pady = 10)
 updateBars()
 
-#Add Food
+#ADD FOOD ----------------------------------------------
 
-nameLabel = Label(frameAddFood, text = 'Name')
+nameLabel = tkinter.Label(frameAddFood, text = 'Name', bg = '#191b3e', fg = 'white')
 nameLabel.grid(row = 0, column = 0)
-nameEntry = Entry(frameAddFood)
+nameEntry = tkinter.Entry(frameAddFood)
 nameEntry.grid(row = 0, column = 1)
-caloriesLabel = Label(frameAddFood, text = 'Calories')
+caloriesLabel = tkinter.Label(frameAddFood, text = 'Calories', bg = '#191b3e', fg = 'white')
 caloriesLabel.grid(row = 1, column = 0)
-caloriesEntry = Entry(frameAddFood)
+caloriesEntry = tkinter.Entry(frameAddFood)
 caloriesEntry.grid(row = 1, column = 1)
-proteinLabel = Label(frameAddFood, text = 'Protein')
+proteinLabel = tkinter.Label(frameAddFood, text = 'Protein', bg = '#191b3e', fg = 'white')
 proteinLabel.grid(row = 2, column = 0)
-proteinEntry = Entry(frameAddFood)
+proteinEntry = tkinter.Entry(frameAddFood)
 proteinEntry.grid(row = 2, column = 1)
-fatLabel = Label(frameAddFood, text = 'Fat')
+fatLabel = tkinter.Label(frameAddFood, text = 'Fat', bg = '#191b3e', fg = 'white')
 fatLabel.grid(row = 3, column = 0)
-fatEntry = Entry(frameAddFood)
+fatEntry = tkinter.Entry(frameAddFood)
 fatEntry.grid(row = 3, column = 1)
-carbLabel = Label(frameAddFood, text = 'Carbohydrates')
+carbLabel = tkinter.Label(frameAddFood, text = 'Carbohydrates', bg = '#191b3e', fg = 'white')
 carbLabel.grid(row = 4, column = 0)
-carbEntry = Entry(frameAddFood)
+carbEntry = tkinter.Entry(frameAddFood)
 carbEntry.grid(row = 4, column = 1)
 
-submit = Button(frameAddFood, text = 'Submit', command = submitAddFood)
+submit = tkinter.Button(frameAddFood, text = 'Submit', command = submitAddFood, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
 submit.grid(row = 5, column = 1)
 
-addToMain = Button(frameAddFood, text = 'Back', command = backFromAdd)
+addToMain = tkinter.Button(frameAddFood, text = 'Back', command = backFromAdd, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
 addToMain.grid(row = 5, column = 0)
 
-#Change Goals
+#CHANGE GOALS -------------------------------------------------------------
 
-caloriesMaxLabel = Label(frameChangeGoal, text = 'Max Calories')
+caloriesMaxLabel = tkinter.Label(frameChangeGoal, text = 'Max Calories', bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
 caloriesMaxLabel.grid(row = 1, column = 0)
-caloriesMaxEntry = Entry(frameChangeGoal)
-caloriesMaxEntry.grid(row = 1, column = 1)
-proteinMaxLabel = Label(frameChangeGoal, text = 'Max Protein')
+caloriesMaxEntry = tkinter.Entry(frameChangeGoal)
+caloriesMaxEntry.grid(row = 1, column = 1, padx = 10, pady = 5)
+proteinMaxLabel = tkinter.Label(frameChangeGoal, text = 'Max Protein', bg = '#191b3e', fg = 'white')
 proteinMaxLabel.grid(row = 2, column = 0)
-proteinMaxEntry = Entry(frameChangeGoal)
-proteinMaxEntry.grid(row = 2, column = 1)
-fatMaxLabel = Label(frameChangeGoal, text = 'Max Fat')
+proteinMaxEntry = tkinter.Entry(frameChangeGoal)
+proteinMaxEntry.grid(row = 2, column = 1, padx = 10, pady = 5)
+fatMaxLabel = tkinter.Label(frameChangeGoal, text = 'Max Fat', bg = '#191b3e', fg = 'white')
 fatMaxLabel.grid(row = 3, column = 0)
-fatMaxEntry = Entry(frameChangeGoal)
-fatMaxEntry.grid(row = 3, column = 1)
-carbMaxLabel = Label(frameChangeGoal, text = 'Max Carbohydrates')
+fatMaxEntry = tkinter.Entry(frameChangeGoal)
+fatMaxEntry.grid(row = 3, column = 1, padx = 10, pady = 5)
+carbMaxLabel = tkinter.Label(frameChangeGoal, text = 'Max Carbohydrates', bg = '#191b3e', fg = 'white')
 carbMaxLabel.grid(row = 4, column = 0)
-carbMaxEntry = Entry(frameChangeGoal)
-carbMaxEntry.grid(row = 4, column = 1)
+carbMaxEntry = tkinter.Entry(frameChangeGoal)
+carbMaxEntry.grid(row = 4, column = 1, padx = 10, pady = 5)
 
-ChangeGoalsButton = Button(frameChangeGoal, text = 'Change Goals', command = changeMaxNuts)
+ChangeGoalsButton = tkinter.Button(frameChangeGoal, text = 'Change Goals', command = changeMaxNuts, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
 ChangeGoalsButton.grid(row = 5, column = 1)
 
-changeGoalsToMain = Button(frameChangeGoal, text = 'Back', command = backFromChangeGoals)
+changeGoalsToMain = tkinter.Button(frameChangeGoal, text = 'Back', command = backFromChangeGoals, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
 changeGoalsToMain.grid(row = 5, column = 0)
 
-#---------------------------
+#---------------------------------------------------------------
 
 
 window.mainloop()
