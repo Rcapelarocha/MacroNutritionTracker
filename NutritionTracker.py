@@ -9,7 +9,7 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter import ttk
 import os
-from tqdm import tqdm
+
 
 manager = Manager()     
                                
@@ -138,7 +138,6 @@ window.geometry("500x500")
 window.title("MakTrak")
 window.config(background = '#191b3e')
 
-progressBar = CTkProgressBar(window, bg_color = 'red').pack()
 
 frameLogo = tkinter.Frame(window, bg = '#191b3e')
 frameMainTop = tkinter.Frame(window, bg = '#191b3e')
