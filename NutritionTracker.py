@@ -7,8 +7,9 @@ from Day import Day
 from datetime import date
 from tkinter import *
 from tkinter.ttk import *
-
+from tkinter import ttk
 import os
+from tqdm import tqdm
 
 manager = Manager()     
                                
@@ -25,6 +26,8 @@ else:
     with open("date.txt", "w") as file:
         file.write(currentDate.isoformat())
     day.clearCurrentNuts()
+
+
 
 
 def updateBars():
@@ -134,6 +137,8 @@ window.iconphoto(True, icon)
 window.geometry("500x500")
 window.title("MakTrak")
 window.config(background = '#191b3e')
+
+progressBar = CTkProgressBar(window, bg_color = 'red').pack()
 
 frameLogo = tkinter.Frame(window, bg = '#191b3e')
 frameMainTop = tkinter.Frame(window, bg = '#191b3e')
