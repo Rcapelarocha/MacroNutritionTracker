@@ -128,15 +128,21 @@ def exitWindow():
 #GUI---------------------------------
 
 window = Tk()
+logo = PhotoImage(file = 'Logo.png')
+icon = PhotoImage(file = 'Icon.png')
+window.iconphoto(True, icon)
 window.geometry("500x500")
+window.title("MakTrak")
 window.config(background = '#191b3e')
 
+frameLogo = tkinter.Frame(window, bg = '#191b3e')
 frameMainTop = tkinter.Frame(window, bg = '#191b3e')
 frameMainBottom = tkinter.Frame(window, bg = '#191b3e')
 frameAddFood = tkinter.Frame(window, bg = '#191b3e')
 frameEatFood = tkinter.Frame(window, bg = '#191b3e')
 frameChangeGoal = tkinter.Frame(window, bg = '#191b3e')
 
+frameLogo.pack()
 frameMainTop.pack()
 frameMainBottom.pack()
 frameAddFood.pack_forget()
@@ -145,6 +151,9 @@ frameEatFood.pack_forget()
 #MAIN -----------------------------------------------------
 
 #Labels 
+logoLabl = tkinter.Label(frameLogo,image = logo, bg = '#191b3e', fg = 'white', padx = 5)
+logoLabl.grid(row = 0, column = 0)
+
 caloriLabl = tkinter.Label(frameMainTop, text = 'Calories', bg = '#191b3e', fg = 'white', padx = 5)
 caloriLabl.grid(row = 0, column = 0)
 protLabl = tkinter.Label(frameMainTop, text = 'Protein', bg = '#191b3e', fg = 'white', padx = 5)
