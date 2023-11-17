@@ -27,6 +27,10 @@ class Manager():
     def removeFood(self, food):
         self.foods.remove(food)
 
+        with open("foods.txt", "w") as file:
+            for food in self.foods:
+                file.write(food.name + " " + str(food.calories) + " " + str(food.protein) + " " + str(food.fat) + " " + str(food.carbs) + "\n")     #save foods in foods.txt
+
 
     def readFoods(self):
         with open("foods.txt", "r") as file:
