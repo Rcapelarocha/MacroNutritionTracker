@@ -27,7 +27,23 @@ else:
         file.write(currentDate.isoformat())
     day.clearCurrentNuts()
 
-
+def overMax():
+    if day.currentCalories >= day.maxCalories:
+        calCurLabl.config(fg='red')
+    else:
+        calCurLabl.config(fg='white')
+    if day.currentProtein >= day.maxProtein:
+        protCurLabl.config(fg='red')
+    else:
+        protCurLabl.config(fg='white')
+    if day.currentFat >= day.maxFat:
+        fatCurLabl.config(fg='red')
+    else:
+        fatCurLabl.config(fg='white')
+    if day.currentCarbs >= day.maxCarbs:
+        carbCurLabl.config(fg='red')
+    else:
+        carbCurLabl.config(fg='white')
 
 
 def updateBars():
@@ -110,6 +126,47 @@ def changeMaxNuts():
     mFat = fatMaxEntry.get()
     mCarb = carbMaxEntry.get()
     day.changeGoal(mCal, mProtein, mFat, mCarb)
+    
+def addCal():
+    day.currentCalories += 1
+    overMax()
+    updateBars()
+
+def subCal():
+    day.currentCalories -= 1
+    overMax()
+    updateBars()
+
+def addProt():
+    day.currentProtein += 1
+    overMax()
+    updateBars()
+
+def subProt():
+    day.currentProtein -= 1
+    overMax()
+    updateBars()
+
+def addFat():
+    day.currentFat += 1
+    overMax()
+    updateBars()
+
+def subFat():
+    day.currentFat -= 1
+    overMax()
+    updateBars()
+
+def addCarb():
+    day.currentCarbs += 1
+    overMax()
+    updateBars()
+
+def subCarb():
+    day.currentCarbs -= 1
+    overMax()
+    updateBars()
+
  
 
 def submitAddFood():
@@ -119,6 +176,11 @@ def submitAddFood():
     fat = fatEntry.get()
     carb = carbEntry.get()
     manager.addFood(name, cal, protein, fat, carb)
+    nameEntry.delete(0,END)
+    caloriesEntry.delete(0,END)
+    proteinEntry.delete(0,END)
+    fatEntry.delete(0,END)
+    carbEntry.delete(0,END)
     
 
 def eat(food, row):
@@ -133,24 +195,28 @@ def backFromEat():
     frameEatFood.pack_forget()
     frameMainTop.pack()
     frameMainBottom.pack()
+    overMax()
     updateBars()
 
 def backFromRemove():
     frameRemoveFood.pack_forget()
     frameMainTop.pack()
     frameMainBottom.pack()
+    overMax()
     updateBars()
     
 def backFromChangeGoals():
     frameChangeGoal.pack_forget()
     frameMainTop.pack()
     frameMainBottom.pack()
+    overMax()
     updateBars()
 
 def backFromAdd():
     frameAddFood.pack_forget()
     frameMainTop.pack()
     frameMainBottom.pack()
+    overMax()
     updateBars()
 
 def exitWindow():
@@ -217,13 +283,31 @@ carbCurLabl = tkinter.Label(frameMainTop, text = str(day.currentCarbs) + "/" + s
 carbCurLabl.grid(row = 3, column = 2)
 
 #Buttons
-eatFoodButton = tkinter.Button(frameMainBottom,text = 'Eat Food', bg = '#191b3e', fg = 'white', width = 10, command = switchToEatFood).grid(row = 5, column = 0, padx = 10, pady = 5)
-addFoodButton = tkinter.Button(frameMainBottom,text = 'Add Food', bg = '#191b3e', fg = 'white', width = 10, command = switchToAddFood).grid(row = 5, column = 1, padx = 10, pady = 5)
-removeFoodButton = tkinter.Button(frameMainBottom,text = 'Remove Food', bg = '#191b3e', fg = 'white', width = 10, command = switchToRemoveFood).grid(row = 6, column = 1, padx = 10, pady = 5)
-changeMaxNutsButton = tkinter.Button(frameMainBottom, text = 'Change Goals', fg = 'white', bg = '#191b3e', width = 10, command = switchToChangeMaxNuts).grid(row = 5, column = 2, padx = 10, pady = 5)
-exitButton = tkinter.Button(frameMainBottom, text = 'Exit', bg = '#191b3e', fg = 'white', width = 10, command = exitWindow).grid(row = 5, column = 3, padx = 10, pady = 5)
+addFoodButton = tkinter.Button(frameMainBottom,text = 'Add Food', bg = '#191b3e', fg = 'white', width = 20, command = switchToAddFood).grid(row = 5, column = 0, padx = 10, pady = 5)
+removeFoodButton = tkinter.Button(frameMainBottom,text = 'Remove Food', bg = '#191b3e', fg = 'white', width = 20, command = switchToRemoveFood).grid(row = 5, column = 1, padx = 10, pady = 5)
+eatFoodButton = tkinter.Button(frameMainBottom,text = 'Eat Food', bg = '#191b3e', fg = 'white', width = 20, command = switchToEatFood).grid(row = 6, column = 0, padx = 40, pady = 5)
+changeMaxNutsButton = tkinter.Button(frameMainBottom, text = 'Change Goals', fg = 'white', bg = '#191b3e', width = 20, command = switchToChangeMaxNuts).grid(row = 6, column = 1, padx = 10, pady = 5)
+exitButton = tkinter.Button(frameMainBottom, text = 'Exit', bg = '#191b3e', fg = 'white', width = 20, command = exitWindow).grid(row = 7, column = 0, padx = 10, pady = 5)
 updateBars()
+overMax()
 
+#Adding/Subtracting Nut Buttons
+addCal = tkinter.Button(frameMainTop, text = "+", bg = '#191b3e', fg = 'white', width = 2, command = addCal)
+addCal.grid(row = 0, column = 3)
+subCal = tkinter.Button(frameMainTop, text = "-", bg = '#191b3e', fg = 'white', width = 2, command = subCal)
+subCal.grid(row = 0, column = 4)
+addProt = tkinter.Button(frameMainTop, text = "+", bg = '#191b3e', fg = 'white', width = 2, command = addProt)
+addProt.grid(row = 1, column = 3)
+subProt = tkinter.Button(frameMainTop, text = "-", bg = '#191b3e', fg = 'white', width = 2, command = subProt)
+subProt.grid(row = 1, column = 4)
+addFat = tkinter.Button(frameMainTop, text = "+", bg = '#191b3e', fg = 'white', width = 2, command = addFat)
+addFat.grid(row = 2, column = 3)
+subFat = tkinter.Button(frameMainTop, text = "-", bg = '#191b3e', fg = 'white', width = 2, command = subFat)
+subFat.grid(row = 2, column = 4)
+addCarb = tkinter.Button(frameMainTop, text = "+", bg = '#191b3e', fg = 'white', width = 2, command = addCarb)
+addCarb.grid(row = 3, column = 3)
+subCarb = tkinter.Button(frameMainTop, text = "-", bg = '#191b3e', fg = 'white', width = 2, command = subCarb)
+subCarb.grid(row = 3, column = 4)
 #ADD FOOD ----------------------------------------------
 
 nameLabel = tkinter.Label(frameAddFood, text = 'Name', bg = '#191b3e', fg = 'white')
@@ -247,10 +331,10 @@ carbLabel.grid(row = 4, column = 0)
 carbEntry = tkinter.Entry(frameAddFood)
 carbEntry.grid(row = 4, column = 1)
 
-submit = tkinter.Button(frameAddFood, text = 'Submit', width = 10, command = submitAddFood, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
+submit = tkinter.Button(frameAddFood, text = 'Submit', width = 10, command = submitAddFood, bg = '#191b3e', fg = 'white', padx = 7, pady = 4)
 submit.grid(row = 5, column = 1)
 
-addToMain = tkinter.Button(frameAddFood, text = 'Back', width = 10, command = backFromAdd, bg = '#191b3e', fg = 'white', padx = 10, pady = 5)
+addToMain = tkinter.Button(frameAddFood, text = 'Back', width = 10, command = backFromAdd, bg = '#191b3e', fg = 'white', padx = 7, pady = 4)
 addToMain.grid(row = 5, column = 0)
 
 #CHANGE GOALS -------------------------------------------------------------
