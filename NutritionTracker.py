@@ -219,8 +219,6 @@ def backFromAdd():
     overMax()
     updateBars()
 
-def exitWindow():
-    window.destroy()
 
 #GUI---------------------------------
 
@@ -287,7 +285,7 @@ addFoodButton = tkinter.Button(frameMainBottom,text = 'Add Food', bg = '#191b3e'
 removeFoodButton = tkinter.Button(frameMainBottom,text = 'Remove Food', bg = '#191b3e', fg = 'white', width = 20, command = switchToRemoveFood).grid(row = 5, column = 1, padx = 10, pady = 5)
 eatFoodButton = tkinter.Button(frameMainBottom,text = 'Eat Food', bg = '#191b3e', fg = 'white', width = 20, command = switchToEatFood).grid(row = 6, column = 0, padx = 40, pady = 5)
 changeMaxNutsButton = tkinter.Button(frameMainBottom, text = 'Change Goals', fg = 'white', bg = '#191b3e', width = 20, command = switchToChangeMaxNuts).grid(row = 6, column = 1, padx = 10, pady = 5)
-exitButton = tkinter.Button(frameMainBottom, text = 'Exit', bg = '#191b3e', fg = 'white', width = 20, command = exitWindow).grid(row = 7, column = 0, padx = 10, pady = 5)
+exitButton = tkinter.Button(frameMainBottom, text = 'Exit', bg = '#191b3e', fg = 'white', width = 20, command = quit).grid(row = 7, column = 0, padx = 10, pady = 5)
 updateBars()
 overMax()
 
