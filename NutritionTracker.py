@@ -8,7 +8,9 @@ from datetime import date
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import ttk
+import tkinter as tk
 import os
+from tkinter import Tk, Canvas, PhotoImage, Frame, Scrollbar
 
 
 manager = Manager()     
@@ -70,48 +72,13 @@ if day.maxCalories == 0 or day.maxCarbs == 0 or day.maxProtein == 0 or day.maxFa
 
 #BUTTON COMMANDS-------------------------------------------
 
-def switchToEatFood():
-    frameMainTop.pack_forget()
-    frameMainBottom.pack_forget()
-    for widget in frameEatFood.winfo_children():
-        widget.destroy()
-    roww = 0
-    coll = 0
-    for food in manager.foods:
-        foodLabel = tkinter.Label(frameEatFood, text = food.name, bg = '#191b3e', fg = 'white', padx = 10, pady = 10)
-        foodLabel.grid(row = roww, column = coll)
-        eatButton = tkinter.Button(frameEatFood, text = 'Eat', bg = '#671ea0', fg = 'white', padx = 10, command=lambda f=food, r=roww: eat(f, r))
-        eatButton.grid(row = roww, column = coll+1)
-        roww = roww + 1
-        
-    eatToMain = tkinter.Button(frameEatFood, text = 'Back', command = backFromEat, bg = '#191b3e', fg = 'white', padx = 7, pady = 4)
-    eatToMain.grid(row = roww+1, column = 0)
-    frameEatFood.pack()
 
 def switchToAddFood():
     frameMainTop.pack_forget()
     frameMainBottom.pack_forget()
     frameAddFood.pack()
 
-def switchToRemoveFood():
-    frameMainTop.pack_forget()
-    frameMainBottom.pack_forget()
-    for widget in frameRemoveFood.winfo_children():
-        widget.destroy()
-    roww = 0
-    coll = 0
-
-    for food in manager.foods:
-        foodLabel = tkinter.Label(frameRemoveFood, text = food.name, bg = '#191b3e', fg = 'white', padx = 10, pady = 10)
-        foodLabel.grid(row = roww, column = coll)
-        eatButton = tkinter.Button(frameRemoveFood, text = 'Remove', bg = '#671ea0', fg = 'white', padx = 10, command=lambda f=food: remove(f))
-        eatButton.grid(row = roww, column = coll+1)
-        roww = roww + 1
-
-    removeToMain = tkinter.Button(frameRemoveFood, text = 'Back', command = backFromRemove, bg = '#191b3e', fg = 'white', padx = 7, pady = 4)
-    removeToMain.grid(row = roww+1, column = 0)
-    frameRemoveFood.pack()
-
+    
 def remove(food):
     manager.removeFood(food)
 
@@ -192,16 +159,22 @@ def eat(food, row):
     print(day.currentCarbs)
 
 def backFromEat():
+    frameLogo.pack()
+    eatCanvas.yview_moveto(0)
     frameEatFood.pack_forget()
     frameMainTop.pack()
     frameMainBottom.pack()
+    eatCanvas.pack_forget()
     overMax()
     updateBars()
 
 def backFromRemove():
+    frameLogo.pack()
+    removeCanvas.yview_moveto(0)
     frameRemoveFood.pack_forget()
     frameMainTop.pack()
     frameMainBottom.pack()
+    removeCanvas.pack_forget()
     overMax()
     updateBars()
     
@@ -218,8 +191,59 @@ def backFromAdd():
     frameMainBottom.pack()
     overMax()
     updateBars()
+    
+def moveEat(event):
+    eatCanvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+    
+def moveRemove(event):
+    removeCanvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
+def switchToRemoveFood():
+    frameLogo.pack_forget()
+    frameMainTop.pack_forget()
+    frameMainBottom.pack_forget()
+    
+    for widget in frameRemoveFood.winfo_children():
+        widget.destroy()
+    roww = 0
+    coll = 0
 
+    for food in manager.foods:
+        foodLabel = tkinter.Label(frameRemoveFood, text = food.name, bg = '#191b3e', fg = 'white', padx = 10, pady = 10)
+        foodLabel.grid(row = roww, column = coll)
+        eatButton = tkinter.Button(frameRemoveFood, text = 'Remove', bg = '#671ea0', fg = 'white', padx = 10, command=lambda f=food: remove(f))
+        eatButton.grid(row = roww, column = coll+1)
+        roww = roww + 1
+
+    removeToMain = tkinter.Button(frameRemoveFood, text = 'Back', command = backFromRemove, bg = '#191b3e', fg = 'white', padx = 7, pady = 4)
+    removeToMain.grid(row = roww+1, column = 0)
+    frameRemoveFood.pack()
+    removeCanvas.pack(side="left", fill="both", expand=True)
+    global frame_windowRemove
+    frame_windowRemove = removeCanvas.create_window((0, 0), window=frameRemoveFood, anchor="nw")
+    
+def switchToEatFood():
+    frameLogo.pack_forget()
+    frameMainTop.pack_forget()
+    frameMainBottom.pack_forget()
+ 
+    for widget in frameEatFood.winfo_children():
+        widget.destroy()
+    roww = 0
+    coll = 0
+    for food in manager.foods:
+        foodLabel = tkinter.Label(frameEatFood, text = food.name, bg = '#191b3e', fg = 'white', padx = 10, pady = 10)
+        foodLabel.grid(row = roww, column = coll)
+        eatButton = tkinter.Button(frameEatFood, text = 'Eat', bg = '#671ea0', fg = 'white', padx = 10, command=lambda f=food, r=roww: eat(f, r))
+        eatButton.grid(row = roww, column = coll+1)
+        roww = roww + 1
+        
+    eatToMain = tkinter.Button(frameEatFood, text = 'Back', command = backFromEat, bg = '#191b3e', fg = 'white', padx = 7, pady = 4)
+    eatToMain.grid(row = roww+1, column = 0)
+    frameEatFood.pack()
+    eatCanvas.pack(side="left", fill="both", expand=True)
+    global frame_windowEat
+    frame_windowEat = eatCanvas.create_window((0, 0), window=frameEatFood, anchor="nw")
 #GUI---------------------------------
 
 window = Tk()
@@ -231,19 +255,33 @@ window.title("MakTrak")
 window.config(background = '#191b3e')
 
 
+eatCanvas = tk.Canvas(window, borderwidth=0, background="#191b3e", highlightbackground="#191b3e")
+eatCanvas.pack(side="left", fill="both", expand=True)
+frameEatFood = tkinter.Frame(eatCanvas, bg = '#191b3e')
+frame_windowEat = eatCanvas.create_window((0, 0), window=frameEatFood, anchor="nw")
+
+removeCanvas = tk.Canvas(window, borderwidth=0, background="#191b3e", highlightbackground="#191b3e")
+removeCanvas.pack(side="left", fill="both", expand=True)
+frameRemoveFood = tkinter.Frame(window, bg = '#191b3e')
+frame_windowRemove = removeCanvas.create_window((0, 0), window=frameRemoveFood, anchor="nw")
+
 frameLogo = tkinter.Frame(window, bg = '#191b3e')
 frameMainTop = tkinter.Frame(window, bg = '#191b3e')
 frameMainBottom = tkinter.Frame(window, bg = '#191b3e')
 frameAddFood = tkinter.Frame(window, bg = '#191b3e')
-frameEatFood = tkinter.Frame(window, bg = '#191b3e')
 frameChangeGoal = tkinter.Frame(window, bg = '#191b3e')
-frameRemoveFood = tkinter.Frame(window, bg = '#191b3e')
+
+eatCanvas.bind("<MouseWheel>", moveEat)
+removeCanvas.bind("<MouseWheel>", moveRemove)
 
 frameLogo.pack()
 frameMainTop.pack()
 frameMainBottom.pack()
 frameAddFood.pack_forget()
-frameEatFood.pack_forget()
+
+removeCanvas.pack_forget()
+eatCanvas.pack_forget()
+
 
 #MAIN -----------------------------------------------------
 
